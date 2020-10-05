@@ -1,6 +1,7 @@
 import pyautogui
 import random
 import time
+import threading
 
 # defines the duration it should take to move mouse from a to b -> Gets choosen randomly between the min and max value
 duration_range = (1, 10)
@@ -18,42 +19,44 @@ def simulate_mouse(width=display_width, height=display_height, duration=duration
     while True:
         # adjust screen - 10% padding
         def countdown(t): 
-            timer.start()
-            while t: 
+            
+            while t:
                 mins, secs = divmod(t, 60) 
-                timer = '{:02d}:{:02d}'.format(mins, secs) 
                 print(timer, end="\r") 
                 time.sleep(1) 
                 t -= 1
+                
 
         # input time in seconds 
         t = input("Enter the time in seconds: ") 
-        
+        timer = threading.Timer(t, countdown)
+        timer.start()
         countdown(int(t))
-        timer.cancel()
+        
         pyautogui.moveTo(random.randint(width*0.1, width*0.9),
                          random.randint(height*0.1, height*0.9),
                          random.randint(duration[0], duration[1])/10)
         time.sleep(random.randint(sleep[0], sleep[1]))
-
+        timer.cancel()
 
 def simulate_keys_volume(sleep=sleep_range):
     """simulate key presses"""
     while True:
         def countdown(t): 
-            timer.start()
-    
+            
+
             while t: 
-                mins, secs = divmod(t, 60) 
-                timer = '{:02d}:{:02d}'.format(mins, secs) 
+                mins, secs = divmod(t, 60)  
                 print(timer, end="\r") 
                 time.sleep(1) 
                 t -= 1
-
+                
         # input time in seconds 
         t = input("Enter the time in seconds: ") 
-
-        countdownt(int(t))
+        timer = threading.Timer(t, countdown)
+        timer.start()
+        countdown(int(t))
+        
         # increase volume and then decrease it to get original value
         pyautogui.press('volumeup')
         time.sleep(1)
@@ -65,6 +68,5 @@ def simulate_keys_volume(sleep=sleep_range):
 
 
 if __name__ == "__main__":
-    simulate_mouse()
+    #simulate_mouse()
     simulate_keys_volume()
-    
