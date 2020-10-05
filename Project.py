@@ -18,7 +18,7 @@ def simulate_mouse(width=display_width, height=display_height, duration=duration
     while True:
         # adjust screen - 10% padding
         def countdown(t): 
-
+            timer.start()
             while t: 
                 mins, secs = divmod(t, 60) 
                 timer = '{:02d}:{:02d}'.format(mins, secs) 
@@ -28,8 +28,9 @@ def simulate_mouse(width=display_width, height=display_height, duration=duration
 
         # input time in seconds 
         t = input("Enter the time in seconds: ") 
-
+        
         countdown(int(t))
+        timer.cancel()
         pyautogui.moveTo(random.randint(width*0.1, width*0.9),
                          random.randint(height*0.1, height*0.9),
                          random.randint(duration[0], duration[1])/10)
@@ -40,6 +41,7 @@ def simulate_keys_volume(sleep=sleep_range):
     """simulate key presses"""
     while True:
         def countdown(t): 
+            timer.start()
     
             while t: 
                 mins, secs = divmod(t, 60) 
@@ -59,6 +61,7 @@ def simulate_keys_volume(sleep=sleep_range):
 
         # make random break until next volume changement
         time.sleep(random.randint(sleep[0], sleep[1]))
+        timer.cancel()
 
 
 if __name__ == "__main__":
